@@ -1,0 +1,437 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#4338ca">
+<title>Explora los ángulos</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f1f5ff;
+  color: #172554;
+}
+
+header {
+  background: #4338ca;
+  color: white;
+  padding: 25px 16px;
+  text-align: center;
+}
+
+header h1 { margin: 0 0 8px; font-size: 29px; }
+header p { margin: 0; }
+
+main {
+  max-width: 750px;
+  margin: auto;
+  padding: 16px;
+}
+
+nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+button, select, input { font: inherit; }
+
+nav button, .btn {
+  padding: 13px 7px;
+  border: 0;
+  border-radius: 12px;
+  background: #e0e7ff;
+  color: #312e81;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+nav button.active, .btn {
+  background: #4338ca;
+  color: white;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 5px 20px #1e3a8a10;
+}
+
+h2 { margin-top: 0; }
+h3 { color: #4338ca; }
+
+.visual {
+  width: 100%;
+  max-width: 420px;
+  display: block;
+  margin: auto;
+}
+
+#medida {
+  font-size: 34px;
+  color: #4338ca;
+  font-weight: bold;
+  text-align: center;
+  margin: 8px;
+}
+
+input[type="range"] { width: 100%; }
+
+.info {
+  background: #eef2ff;
+  padding: 14px;
+  border-radius: 12px;
+  line-height: 1.6;
+}
+
+.opciones {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.opciones button {
+  padding: 14px;
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.opciones button:focus-visible,
+button:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+.opciones button:disabled { cursor: default; }
+
+#resultado {
+  min-height: 28px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.progreso {
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+#barra {
+  width: 0%;
+  height: 100%;
+  background: #16a34a;
+  transition: width .2s;
+}
+
+.oculto { display: none; }
+
+footer {
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+  padding: 15px;
+}
+
+@media (max-width: 380px) {
+  nav button { font-size: 13px; }
+  .card { padding: 15px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>📐 Explora los ángulos</h1>
+  <p>Matemática · 6.º básico</p>
+</header>
+
+<main>
+<nav aria-label="Secciones">
+  <button class="active" data-seccion="aprende">📘 Aprende</button>
+  <button data-seccion="explora">🔍 Explora</button>
+  <button data-seccion="reto">🏆 Desafío</button>
+</nav>
+
+<section id="aprende" class="seccion">
+  <div class="card">
+    <h2>¿Qué es un ángulo?</h2>
+    <p>Un ángulo es la abertura formada por dos semirrectas que parten de un mismo punto llamado vértice.</p>
+
+    <svg class="visual" viewBox="0 0 320 210" role="img"
+      aria-label="Ejemplo de un ángulo con vértice y dos lados">
+      <line x1="55" y1="160" x2="270" y2="160"
+        stroke="#2563eb" stroke-width="5" stroke-linecap="round"/>
+      <line x1="55" y1="160" x2="180" y2="45"
+        stroke="#ea580c" stroke-width="5" stroke-linecap="round"/>
+      <path d="M100 160 A45 45 0 0 0 85 130"
+        fill="none" stroke="#16a34a" stroke-width="4"/>
+      <circle cx="55" cy="160" r="6" fill="#172554"/>
+      <text x="42" y="184" font-size="14" fill="#172554">Vértice</text>
+      <text x="200" y="184" font-size="14" fill="#2563eb">Lado</text>
+      <text x="150" y="45" font-size="14" fill="#ea580c">Lado</text>
+    </svg>
+    <p class="info">💡 La medida de un ángulo se expresa en grados (°).</p>
+  </div>
+
+  <div class="card">
+    <h2>Tipos de ángulos</h2>
+
+    <div class="info">
+      <h3>🟢 Ángulo agudo</h3>
+      Mide más de 0° y menos de 90°.
+      <p><b>Ejemplo:</b> 45°</p>
+    </div>
+
+    <div class="info" style="margin-top:12px">
+      <h3>🔵 Ángulo recto</h3>
+      Mide exactamente 90°.
+      <p><b>Ejemplo:</b> la esquina de un cuadrado.</p>
+    </div>
+
+    <div class="info" style="margin-top:12px">
+      <h3>🟠 Ángulo obtuso</h3>
+      Mide más de 90° y menos de 180°.
+      <p><b>Ejemplo:</b> 120°</p>
+    </div>
+
+    <div class="info" style="margin-top:12px">
+      <h3>🟣 Ángulo extendido</h3>
+      Mide exactamente 180°.
+      <p><b>Ejemplo:</b> una línea recta.</p>
+    </div>
+
+    <div class="info" style="margin-top:12px">
+      <h3>🔴 Ángulo completo</h3>
+      Mide exactamente 360°.
+      <p><b>Ejemplo:</b> una vuelta completa.</p>
+    </div>
+  </div>
+</section>
+
+<section id="explora" class="seccion oculto">
+  <div class="card">
+    <h2>🔍 ¡Mueve el ángulo!</h2>
+    <p>Desliza el control y observa cómo cambia su abertura.</p>
+
+    <svg id="grafico" class="visual" viewBox="0 0 320 280"
+      role="img" aria-label="Representación interactiva del ángulo">
+      <line x1="30" y1="220" x2="290" y2="220"
+        stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5 5"/>
+      <path id="sector" fill="#c7d2fe" opacity=".8"/>
+      <line id="lado1" x1="160" y1="220" x2="280" y2="220"
+        stroke="#4338ca" stroke-width="5" stroke-linecap="round"/>
+      <line id="lado2" x1="160" y1="220" x2="280" y2="220"
+        stroke="#ea580c" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="160" cy="220" r="6" fill="#172554"/>
+      <text x="145" y="245" font-size="13" fill="#172554">Vértice</text>
+    </svg>
+
+    <div id="medida">45°</div>
+    <label for="control">Medida del ángulo</label>
+    <input id="control" type="range" min="0" max="360" value="45"
+      step="5">
+    <p id="nombre" class="info" aria-live="polite">
+      🟢 Ángulo agudo
+    </p>
+    <button class="btn" id="aleatorio">Probar otro ángulo</button>
+  </div>
+</section>
+
+<section id="reto" class="seccion oculto">
+  <div class="card">
+    <h2>🏆 Desafío matemático</h2>
+    <p>Selecciona la respuesta correcta para cada pregunta.</p>
+
+    <p id="contador">Pregunta 1 de 10</p>
+    <div class="progreso"><div id="barra"></div></div>
+
+    <h3 id="pregunta"></h3>
+    <div id="opciones" class="opciones"></div>
+    <p id="resultado" role="status" aria-live="polite"></p>
+    <button class="btn" id="siguiente" disabled>Siguiente pregunta →</button>
+  </div>
+</section>
+</main>
+
+<footer>Aprender jugando · Matemática para todos 💙</footer>
+
+<script>
+const secciones = document.querySelectorAll(".seccion");
+const botonesNav = document.querySelectorAll("nav button");
+
+botonesNav.forEach(boton => {
+  boton.addEventListener("click", () => {
+    botonesNav.forEach(b => b.classList.remove("active"));
+    boton.classList.add("active");
+
+    secciones.forEach(s => s.classList.add("oculto"));
+    document.getElementById(boton.dataset.seccion)
+      .classList.remove("oculto");
+  });
+});
+
+function tipoAngulo(g) {
+  if (g === 0) return "Ángulo nulo";
+  if (g < 90) return "🟢 Ángulo agudo";
+  if (g === 90) return "🔵 Ángulo recto";
+  if (g < 180) return "🟠 Ángulo obtuso";
+  if (g === 180) return "🟣 Ángulo extendido";
+  if (g < 360) return "🔴 Ángulo cóncavo";
+  return "🔴 Ángulo completo";
+}
+
+function dibujarAngulo(g) {
+  const cx = 160, cy = 220, radio = 120;
+  const rad = g * Math.PI / 180;
+  const x = cx + radio * Math.cos(rad);
+  const y = cy - radio * Math.sin(rad);
+
+  document.getElementById("lado2").setAttribute("x2", x);
+  document.getElementById("lado2").setAttribute("y2", y);
+
+  const pasos = Math.min(Math.max(g, 1), 360);
+  let d = `M ${cx} ${cy} `;
+  for (let i = 0; i <= pasos; i += 3) {
+    const a = Math.min(i, g) * Math.PI / 180;
+    const px = cx + 48 * Math.cos(a);
+    const py = cy - 48 * Math.sin(a);
+    d += `L ${px} ${py} `;
+  }
+  const ex = cx + 48 * Math.cos(rad);
+  const ey = cy - 48 * Math.sin(rad);
+  d += `L ${ex} ${ey} Z`;
+
+  document.getElementById("sector").setAttribute("d", d);
+  document.getElementById("medida").textContent = g + "°";
+  document.getElementById("nombre").textContent = tipoAngulo(g);
+}
+
+const control = document.getElementById("control");
+control.addEventListener("input", () => {
+  dibujarAngulo(Number(control.value));
+});
+
+document.getElementById("aleatorio").addEventListener("click", () => {
+  const valores = [30, 45, 60, 90, 110, 135, 180, 225, 270, 360];
+  control.value = valores[Math.floor(Math.random() * valores.length)];
+  dibujarAngulo(Number(control.value));
+});
+
+dibujarAngulo(45);
+
+// Banco de preguntas
+const preguntas = [
+  {p:"¿Cuánto mide un ángulo recto?", o:["45°","90°","180°"], r:1},
+  {p:"¿Cuál es un ángulo agudo?", o:["120°","90°","35°"], r:2},
+  {p:"¿Cómo se clasifica un ángulo de 130°?", o:["Agudo","Obtuso","Recto"], r:1},
+  {p:"¿Cuánto mide un ángulo extendido?", o:["180°","90°","360°"], r:0},
+  {p:"¿Cuál es un ángulo completo?", o:["270°","180°","360°"], r:2},
+  {p:"Un ángulo de 70° es...", o:["Agudo","Obtuso","Recto"], r:0},
+  {p:"¿Qué ángulo mide exactamente 90°?", o:["Extendido","Recto","Completo"], r:1},
+  {p:"Un ángulo de 150° es...", o:["Agudo","Obtuso","Recto"], r:1},
+  {p:"¿Cuántos grados tiene media vuelta?", o:["90°","180°","360°"], r:1},
+  {p:"¿Cuántos grados tiene una vuelta completa?", o:["180°","90°","360°"], r:2}
+];
+
+let indice = 0;
+let puntos = 0;
+let respondida = false;
+let ordenPreguntas = [];
+
+function iniciarReto() {
+  ordenPreguntas = [...preguntas].sort(() => Math.random() - 0.5);
+  indice = 0;
+  puntos = 0;
+  mostrarPregunta();
+}
+
+function mostrarPregunta() {
+  respondida = false;
+  const q = ordenPreguntas[indice];
+
+  document.getElementById("contador").textContent =
+    `Pregunta ${indice + 1} de ${ordenPreguntas.length}`;
+  document.getElementById("barra").style.width =
+    `${indice / ordenPreguntas.length * 100}%`;
+  document.getElementById("pregunta").textContent = q.p;
+  document.getElementById("resultado").textContent = "";
+  document.getElementById("siguiente").disabled = true;
+  document.getElementById("siguiente").textContent =
+    indice === ordenPreguntas.length - 1
+      ? "Ver resultado 🏆"
+      : "Siguiente pregunta →";
+
+  const contenedor = document.getElementById("opciones");
+  contenedor.innerHTML = "";
+
+  q.o.forEach((opcion, i) => {
+    const b = document.createElement("button");
+    b.textContent = opcion;
+    b.addEventListener("click", () => responder(i));
+    contenedor.appendChild(b);
+  });
+}
+
+function responder(eleccion) {
+  if (respondida) return;
+  respondida = true;
+
+  const q = ordenPreguntas[indice];
+  const opciones = document.querySelectorAll("#opciones button");
+
+  opciones.forEach(b => b.disabled = true);
+
+  if (eleccion === q.r) {
+    puntos++;
+    document.getElementById("resultado").textContent =
+      "✅ ¡Muy bien! Respuesta correcta.";
+    opciones[eleccion].style.background = "#dcfce7";
+  } else {
+    document.getElementById("resultado").textContent =
+      `❌ La respuesta correcta es: ${q.o[q.r]}.`;
+    opciones[eleccion].style.background = "#fee2e2";
+    opciones[q.r].style.background = "#dcfce7";
+  }
+
+  document.getElementById("siguiente").disabled = false;
+}
+
+document.getElementById("siguiente").addEventListener("click", () => {
+  if (!respondida) return;
+
+  if (indice < ordenPreguntas.length - 1) {
+    indice++;
+    mostrarPregunta();
+  } else {
+    document.getElementById("pregunta").textContent =
+      `¡Terminaste! Tu puntaje es ${puntos} de ${preguntas.length}.`;
+    document.getElementById("opciones").innerHTML = "";
+    document.getElementById("resultado").textContent =
+      puntos >= 8
+        ? "🌟 ¡Excelente trabajo!"
+        : "💪 ¡Sigue practicando, puedes mejorar!";
+    document.getElementById("contador").textContent = "Desafío finalizado";
+    document.getElementById("barra").style.width = "100%";
+    document.getElementById("siguiente").textContent = "Volver a jugar";
+    document.getElementById("siguiente").disabled = false;
+    document.getElementById("siguiente").onclick = iniciarReto;
+  }
+});
+
+iniciarReto();
+</script>
+</body>
+</html>

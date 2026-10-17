@@ -722,8 +722,8 @@ input:focus {
 
         </div>
 
-        <button class="notification">
-            🔔
+        <button class="notification" onclick="abrirRespaldo()" aria-label="Respaldo de datos" title="Respaldo de datos">
+            💾
         </button>
 
     </div>
@@ -2217,6 +2217,103 @@ function escaparHTML(valor) {
 /* =========================================
    INICIO
 ========================================= */
+
+
+/* =========================================
+   RESPALDO Y RESTAURACIÓN DE DATOS
+========================================= */
+function abrirRespaldo() {
+    const html = `
+      <div class="student-card" style="margin-bottom:14px">
+        <h3 style="margin-bottom:8px">💾 Respaldo de AURA+</h3>
+        <p style="font-size:13px;line-height:1.5">Guarda una copia de estudiantes, saldos de Auras, movimientos y asistencias en un archivo JSON. Conserva ese archivo en un lugar seguro.</p>
+      </div>
+      <button class="primary-btn" style="width:100%;margin-bottom:12px" onclick="exportarRespaldo()">⬇️ Descargar respaldo</button>
+      <div class="student-card">
+        <h3 style="margin-bottom:8px">♻️ Restaurar respaldo</h3>
+        <p style="font-size:13px;line-height:1.5;margin-bottom:12px">Carga un archivo de respaldo creado por AURA+. La restauración reemplazará los datos actuales de este navegador.</p>
+        <input id="archivoRespaldo" type="file" accept=".json,application/json" style="width:100%;margin-bottom:12px">
+        <button class="primary-btn" style="width:100%" onclick="importarRespaldo()">Restaurar datos</button>
+      </div>
+      <p style="font-size:12px;color:#6b7280;line-height:1.5;margin-top:14px">Importante: el respaldo queda en el archivo que descargues; no se envía a internet. No compartas archivos que contengan datos de estudiantes.</p>
+    `;
+    abrirModal('Respaldo y datos', html);
+}
+
+function exportarRespaldo() {
+    try {
+        const datos = {
+            aplicacion: 'AURA+',
+            versionRespaldo: 1,
+            fechaExportacion: new Date().toISOString(),
+            estudiantes,
+            movimientos,
+            asistencias
+        };
+        const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const enlace = document.createElement('a');
+        const fecha = new Date().toISOString().slice(0, 10);
+        enlace.href = url;
+        enlace.download = `AURA_plus_respaldo_${fecha}.json`;
+        document.body.appendChild(enlace);
+        enlace.click();
+        enlace.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        mostrarToast('Respaldo descargado correctamente');
+    } catch (error) {
+        console.error(error);
+        mostrarToast('No se pudo crear el respaldo');
+    }
+}
+
+async function importarRespaldo() {
+    const input = document.getElementById('archivoRespaldo');
+    const archivo = input && input.files ? input.files[0] : null;
+    if (!archivo) {
+        mostrarToast('Selecciona primero un archivo JSON');
+        return;
+    }
+    try {
+        const texto = await archivo.text();
+        const datos = JSON.parse(texto);
+        if (!datos || datos.aplicacion !== 'AURA+' || !Array.isArray(datos.estudiantes) || !Array.isArray(datos.movimientos) || !Array.isArray(datos.asistencias)) {
+            mostrarToast('El archivo no parece ser un respaldo válido de AURA+');
+            return;
+        }
+        const confirmar = confirm('Esto reemplazará los estudiantes, movimientos y asistencias guardados actualmente en este navegador. ¿Deseas continuar?');
+        if (!confirmar) return;
+
+        // Crear una copia de seguridad de los datos actuales antes de reemplazarlos.
+        const respaldoPrevio = {
+            aplicacion: 'AURA+',
+            versionRespaldo: 1,
+            fechaExportacion: new Date().toISOString(),
+            estudiantes,
+            movimientos,
+            asistencias
+        };
+        const blobPrevio = new Blob([JSON.stringify(respaldoPrevio, null, 2)], { type: 'application/json;charset=utf-8' });
+        const urlPrevio = URL.createObjectURL(blobPrevio);
+        const enlacePrevio = document.createElement('a');
+        enlacePrevio.href = urlPrevio;
+        enlacePrevio.download = `AURA_plus_respaldo_anterior_${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(enlacePrevio);
+        enlacePrevio.click();
+        enlacePrevio.remove();
+        setTimeout(() => URL.revokeObjectURL(urlPrevio), 1000);
+
+        estudiantes = datos.estudiantes;
+        movimientos = datos.movimientos;
+        asistencias = datos.asistencias;
+        guardar();
+        cerrarModal();
+        mostrarToast('Respaldo restaurado correctamente');
+    } catch (error) {
+        console.error(error);
+        mostrarToast('No se pudo leer el archivo. Comprueba que sea un respaldo JSON válido.');
+    }
+}
 
 function irInicio() {
 

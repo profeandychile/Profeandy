@@ -1,437 +1,2122 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#4338ca">
-<title>Explora los ángulos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#6C63FF">
+
+<title>AURA+</title>
 
 <style>
-* { box-sizing: border-box; }
+/* =========================
+   CONFIGURACIÓN GENERAL
+========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background: #eef0f7;
+}
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f1f5ff;
-  color: #172554;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f7f8fc;
+    color: #20202b;
+    min-height: 100vh;
+    padding-bottom: 88px;
 }
 
-header {
-  background: #4338ca;
-  color: white;
-  padding: 25px 16px;
-  text-align: center;
+/* En computador simulamos una app móvil */
+.app {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    margin: auto;
+    background: #f7f8fc;
+    position: relative;
+    overflow-x: hidden;
 }
 
-header h1 { margin: 0 0 8px; font-size: 29px; }
-header p { margin: 0; }
+/* =========================
+   HEADER
+========================= */
 
-main {
-  max-width: 750px;
-  margin: auto;
-  padding: 16px;
+.header {
+    background: linear-gradient(145deg, #6258e8, #8379ff);
+    color: white;
+    padding: 24px 20px 30px;
+    border-radius: 0 0 30px 30px;
 }
 
-nav {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 16px;
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-button, select, input { font: inherit; }
-
-nav button, .btn {
-  padding: 13px 7px;
-  border: 0;
-  border-radius: 12px;
-  background: #e0e7ff;
-  color: #312e81;
-  font-weight: bold;
-  cursor: pointer;
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-nav button.active, .btn {
-  background: #4338ca;
-  color: white;
+.brand-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
 }
 
-.card {
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 5px 20px #1e3a8a10;
+.brand-name {
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -.5px;
 }
 
-h2 { margin-top: 0; }
-h3 { color: #4338ca; }
-
-.visual {
-  width: 100%;
-  max-width: 420px;
-  display: block;
-  margin: auto;
+.brand-subtitle {
+    font-size: 10px;
+    opacity: .8;
 }
 
-#medida {
-  font-size: 34px;
-  color: #4338ca;
-  font-weight: bold;
-  text-align: center;
-  margin: 8px;
+.notification {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 13px;
+    background: rgba(255,255,255,.16);
+    color: white;
+    font-size: 20px;
 }
 
-input[type="range"] { width: 100%; }
-
-.info {
-  background: #eef2ff;
-  padding: 14px;
-  border-radius: 12px;
-  line-height: 1.6;
+.welcome {
+    margin-top: 25px;
 }
 
-.opciones {
-  display: grid;
-  gap: 10px;
-  margin: 16px 0;
+.welcome h2 {
+    font-size: 24px;
+    margin-bottom: 4px;
 }
 
-.opciones button {
-  padding: 14px;
-  background: #f8fafc;
-  border: 2px solid #cbd5e1;
-  border-radius: 12px;
-  text-align: left;
-  cursor: pointer;
+.welcome p {
+    font-size: 13px;
+    opacity: .82;
 }
 
-.opciones button:focus-visible,
-button:focus-visible {
-  outline: 3px solid #f59e0b;
-  outline-offset: 2px;
+/* =========================
+   CONTENIDO
+========================= */
+
+.content {
+    padding: 0 16px;
 }
 
-.opciones button:disabled { cursor: default; }
+/* =========================
+   TARJETA AURAS
+========================= */
 
-#resultado {
-  min-height: 28px;
-  font-weight: bold;
-  line-height: 1.5;
+.aura-card {
+    margin-top: -10px;
+    background: linear-gradient(135deg, #fff7c7, #ffe57c);
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(40,40,80,.12);
+    position: relative;
+    overflow: hidden;
 }
 
-.progreso {
-  height: 10px;
-  background: #e2e8f0;
-  border-radius: 20px;
-  overflow: hidden;
-  margin: 12px 0;
+.aura-card::after {
+    content: "✨";
+    position: absolute;
+    right: -10px;
+    bottom: -20px;
+    font-size: 95px;
+    opacity: .15;
 }
 
-#barra {
-  width: 0%;
-  height: 100%;
-  background: #16a34a;
-  transition: width .2s;
+.aura-small {
+    font-size: 12px;
+    font-weight: 700;
+    color: #685900;
 }
 
-.oculto { display: none; }
-
-footer {
-  text-align: center;
-  color: #64748b;
-  font-size: 13px;
-  padding: 15px;
+.aura-number {
+    font-size: 42px;
+    font-weight: 900;
+    color: #302900;
+    margin-top: 4px;
 }
 
-@media (max-width: 380px) {
-  nav button { font-size: 13px; }
-  .card { padding: 15px; }
+.aura-label {
+    font-size: 12px;
+    color: #6d5f00;
+}
+
+/* =========================
+   NFC
+========================= */
+
+.nfc-card {
+    margin-top: 16px;
+    background: #202033;
+    color: white;
+    border-radius: 22px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 8px 20px rgba(20,20,40,.14);
+}
+
+.nfc-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,.10);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.nfc-text {
+    flex: 1;
+}
+
+.nfc-text strong {
+    display: block;
+    font-size: 15px;
+}
+
+.nfc-text span {
+    display: block;
+    font-size: 11px;
+    opacity: .65;
+    margin-top: 3px;
+}
+
+.nfc-button {
+    border: none;
+    background: #7167ff;
+    color: white;
+    padding: 11px 13px;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+/* =========================
+   SECCIONES
+========================= */
+
+.section {
+    margin-top: 25px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.see-all {
+    border: none;
+    background: none;
+    color: #675eea;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* =========================
+   ACCESOS
+========================= */
+
+.quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 11px;
+}
+
+.quick {
+    background: white;
+    border-radius: 20px;
+    padding: 17px;
+    min-height: 112px;
+    border: none;
+    text-align: left;
+    box-shadow: 0 5px 16px rgba(30,30,70,.05);
+    transition: transform .15s;
+}
+
+.quick:active {
+    transform: scale(.97);
+}
+
+.quick-icon {
+    font-size: 27px;
+    margin-bottom: 11px;
+}
+
+.quick strong {
+    display: block;
+    font-size: 14px;
+}
+
+.quick span {
+    display: block;
+    font-size: 11px;
+    color: #92929d;
+    margin-top: 4px;
+}
+
+/* =========================
+   PROGRESO
+========================= */
+
+.progress-card {
+    background: white;
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: 0 5px 16px rgba(30,30,70,.05);
+}
+
+.progress-row {
+    margin-bottom: 16px;
+}
+
+.progress-row:last-child {
+    margin-bottom: 0;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 7px;
+}
+
+.progress-info span:last-child {
+    color: #7167ee;
+    font-weight: 700;
+}
+
+.progress {
+    width: 100%;
+    height: 9px;
+    background: #eeeeF5;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg,#655be8,#8c84ff);
+}
+
+/* =========================
+   NAVEGACIÓN INFERIOR
+========================= */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    height: 75px;
+    background: rgba(255,255,255,.96);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid #eeeeF3;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+}
+
+.nav-item {
+    border: none;
+    background: none;
+    color: #9999a5;
+    font-size: 10px;
+    font-weight: 600;
+    width: 20%;
+}
+
+.nav-item div {
+    font-size: 21px;
+    margin-bottom: 4px;
+}
+
+.nav-item.active {
+    color: #665de8;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(20,20,35,.50);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 300;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 480px;
+    max-height: 88vh;
+    overflow-y: auto;
+    background: #f7f8fc;
+    border-radius: 28px 28px 0 0;
+    padding: 22px 18px 35px;
+    animation: subir .2s ease;
+}
+
+@keyframes subir {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-size: 20px;
+}
+
+.close {
+    border: none;
+    background: #e9e9f0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 15px;
+}
+
+/* =========================
+   BOTONES
+========================= */
+
+.primary {
+    width: 100%;
+    border: none;
+    background: #675de8;
+    color: white;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.secondary {
+    border: none;
+    background: #eeeeff;
+    color: #6259d8;
+    padding: 10px 13px;
+    border-radius: 11px;
+    font-weight: 700;
+}
+
+.danger {
+    border: none;
+    background: #ffe7e7;
+    color: #d33;
+    padding: 10px 13px;
+    border-radius: 11px;
+}
+
+/* =========================
+   FORMULARIOS
+========================= */
+
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+input,
+select {
+    width: 100%;
+    border: 1px solid #dedee8;
+    background: white;
+    padding: 14px;
+    border-radius: 13px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #6c63e8;
+}
+
+/* =========================
+   ESTUDIANTES
+========================= */
+
+.student {
+    background: white;
+    border-radius: 19px;
+    padding: 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(30,30,70,.04);
+}
+
+.student-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 15px;
+    background: #eeeeff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.student-main {
+    flex: 1;
+}
+
+.student-name {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.student-info {
+    font-size: 11px;
+    color: #999;
+    margin-top: 3px;
+}
+
+.student-aura {
+    background: #fff3ad;
+    color: #665800;
+    border-radius: 20px;
+    padding: 7px 9px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.actions {
+    display: flex;
+    gap: 7px;
+    margin-top: 13px;
+}
+
+/* =========================
+   RECOMPENSAS
+========================= */
+
+.reward {
+    background: white;
+    border-radius: 19px;
+    padding: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.reward-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+    background: #f0efff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.reward-info {
+    flex: 1;
+}
+
+.reward-name {
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.reward-price {
+    font-size: 11px;
+    color: #6a60df;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.reward button {
+    border: none;
+    background: #665de7;
+    color: white;
+    padding: 9px 11px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* =========================
+   HISTORIAL
+========================= */
+
+.transaction {
+    background: white;
+    border-radius: 17px;
+    padding: 14px;
+    margin-bottom: 9px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transaction-info strong {
+    font-size: 13px;
+}
+
+.transaction-info small {
+    color: #999;
+    font-size: 10px;
+}
+
+.transaction-amount {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.plus {
+    color: #159447;
+}
+
+.minus {
+    color: #d33;
+}
+
+/* =========================
+   VACÍO
+========================= */
+
+.empty {
+    text-align: center;
+    padding: 35px 20px;
+    color: #999;
+    font-size: 13px;
+}
+
+.empty-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90%;
+    background: #202033;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 13px;
+    font-size: 12px;
+    display: none;
+    z-index: 500;
+}
+
+.toast.show {
+    display: block;
+}
+
+/* =========================
+   PC
+========================= */
+
+@media (min-width: 700px) {
+
+    body {
+        padding: 20px 0;
+    }
+
+    .app {
+        min-height: calc(100vh - 40px);
+        border-radius: 30px;
+        box-shadow: 0 15px 50px rgba(20,20,50,.15);
+    }
+
+    .bottom-nav {
+        bottom: 20px;
+        border-radius: 0 0 30px 30px;
+    }
 }
 </style>
 </head>
 
 <body>
-<header>
-  <h1>📐 Explora los ángulos</h1>
-  <p>Matemática · 6.º básico</p>
+
+<div class="app">
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="header-top">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                ✨
+            </div>
+
+            <div>
+                <div class="brand-name">
+                    AURA+
+                </div>
+
+                <div class="brand-subtitle">
+                    Aprende · Avanza · Consigue
+                </div>
+            </div>
+
+        </div>
+
+        <button class="notification">
+            🔔
+        </button>
+
+    </div>
+
+    <div class="welcome">
+
+        <h2>Hola 👋</h2>
+
+        <p>
+            Hagamos que cada avance cuente.
+        </p>
+
+    </div>
+
 </header>
 
-<main>
-<nav aria-label="Secciones">
-  <button class="active" data-seccion="aprende">📘 Aprende</button>
-  <button data-seccion="explora">🔍 Explora</button>
-  <button data-seccion="reto">🏆 Desafío</button>
-</nav>
 
-<section id="aprende" class="seccion">
-  <div class="card">
-    <h2>¿Qué es un ángulo?</h2>
-    <p>Un ángulo es la abertura formada por dos semirrectas que parten de un mismo punto llamado vértice.</p>
+<main class="content">
 
-    <svg class="visual" viewBox="0 0 320 210" role="img"
-      aria-label="Ejemplo de un ángulo con vértice y dos lados">
-      <line x1="55" y1="160" x2="270" y2="160"
-        stroke="#2563eb" stroke-width="5" stroke-linecap="round"/>
-      <line x1="55" y1="160" x2="180" y2="45"
-        stroke="#ea580c" stroke-width="5" stroke-linecap="round"/>
-      <path d="M100 160 A45 45 0 0 0 85 130"
-        fill="none" stroke="#16a34a" stroke-width="4"/>
-      <circle cx="55" cy="160" r="6" fill="#172554"/>
-      <text x="42" y="184" font-size="14" fill="#172554">Vértice</text>
-      <text x="200" y="184" font-size="14" fill="#2563eb">Lado</text>
-      <text x="150" y="45" font-size="14" fill="#ea580c">Lado</text>
-    </svg>
-    <p class="info">💡 La medida de un ángulo se expresa en grados (°).</p>
-  </div>
+<!-- =========================
+     AURAS
+========================= -->
 
-  <div class="card">
-    <h2>Tipos de ángulos</h2>
+<section class="aura-card">
 
-    <div class="info">
-      <h3>🟢 Ángulo agudo</h3>
-      Mide más de 0° y menos de 90°.
-      <p><b>Ejemplo:</b> 45°</p>
+    <div class="aura-small">
+        ✨ MIS AURAS
     </div>
 
-    <div class="info" style="margin-top:12px">
-      <h3>🔵 Ángulo recto</h3>
-      Mide exactamente 90°.
-      <p><b>Ejemplo:</b> la esquina de un cuadrado.</p>
+    <div
+        class="aura-number"
+        id="totalAuras">
+        0
     </div>
 
-    <div class="info" style="margin-top:12px">
-      <h3>🟠 Ángulo obtuso</h3>
-      Mide más de 90° y menos de 180°.
-      <p><b>Ejemplo:</b> 120°</p>
+    <div class="aura-label">
+        monedas disponibles
     </div>
 
-    <div class="info" style="margin-top:12px">
-      <h3>🟣 Ángulo extendido</h3>
-      Mide exactamente 180°.
-      <p><b>Ejemplo:</b> una línea recta.</p>
-    </div>
-
-    <div class="info" style="margin-top:12px">
-      <h3>🔴 Ángulo completo</h3>
-      Mide exactamente 360°.
-      <p><b>Ejemplo:</b> una vuelta completa.</p>
-    </div>
-  </div>
 </section>
 
-<section id="explora" class="seccion oculto">
-  <div class="card">
-    <h2>🔍 ¡Mueve el ángulo!</h2>
-    <p>Desliza el control y observa cómo cambia su abertura.</p>
 
-    <svg id="grafico" class="visual" viewBox="0 0 320 280"
-      role="img" aria-label="Representación interactiva del ángulo">
-      <line x1="30" y1="220" x2="290" y2="220"
-        stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5 5"/>
-      <path id="sector" fill="#c7d2fe" opacity=".8"/>
-      <line id="lado1" x1="160" y1="220" x2="280" y2="220"
-        stroke="#4338ca" stroke-width="5" stroke-linecap="round"/>
-      <line id="lado2" x1="160" y1="220" x2="280" y2="220"
-        stroke="#ea580c" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="160" cy="220" r="6" fill="#172554"/>
-      <text x="145" y="245" font-size="13" fill="#172554">Vértice</text>
-    </svg>
+<!-- =========================
+     NFC
+========================= -->
 
-    <div id="medida">45°</div>
-    <label for="control">Medida del ángulo</label>
-    <input id="control" type="range" min="0" max="360" value="45"
-      step="5">
-    <p id="nombre" class="info" aria-live="polite">
-      🟢 Ángulo agudo
-    </p>
-    <button class="btn" id="aleatorio">Probar otro ángulo</button>
-  </div>
+<section class="nfc-card">
+
+    <div class="nfc-icon">
+        🪪
+    </div>
+
+    <div class="nfc-text">
+
+        <strong>
+            Identificar estudiante
+        </strong>
+
+        <span>
+            Tarjeta NFC preparada
+        </span>
+
+    </div>
+
+    <button
+        class="nfc-button"
+        onclick="simularNFC()">
+
+        ESCANEAR
+
+    </button>
+
 </section>
 
-<section id="reto" class="seccion oculto">
-  <div class="card">
-    <h2>🏆 Desafío matemático</h2>
-    <p>Selecciona la respuesta correcta para cada pregunta.</p>
 
-    <p id="contador">Pregunta 1 de 10</p>
-    <div class="progreso"><div id="barra"></div></div>
+<!-- =========================
+     ACCESOS
+========================= -->
 
-    <h3 id="pregunta"></h3>
-    <div id="opciones" class="opciones"></div>
-    <p id="resultado" role="status" aria-live="polite"></p>
-    <button class="btn" id="siguiente" disabled>Siguiente pregunta →</button>
-  </div>
+<section class="section">
+
+    <div class="section-header">
+
+        <div class="section-title">
+            Accesos rápidos
+        </div>
+
+    </div>
+
+    <div class="quick-grid">
+
+        <button
+            class="quick"
+            onclick="abrirEstudiantes()">
+
+            <div class="quick-icon">
+                👥
+            </div>
+
+            <strong>
+                Estudiantes
+            </strong>
+
+            <span id="cantidadEstudiantes">
+                0 estudiantes
+            </span>
+
+        </button>
+
+
+        <button
+            class="quick"
+            onclick="abrirAuras()">
+
+            <div class="quick-icon">
+                🪙
+            </div>
+
+            <strong>
+                Auras
+            </strong>
+
+            <span>
+                Ganar y gastar
+            </span>
+
+        </button>
+
+
+        <button
+            class="quick"
+            onclick="abrirMisiones()">
+
+            <div class="quick-icon">
+                🎯
+            </div>
+
+            <strong>
+                Misiones
+            </strong>
+
+            <span>
+                Desafíos
+            </span>
+
+        </button>
+
+
+        <button
+            class="quick"
+            onclick="abrirLogros()">
+
+            <div class="quick-icon">
+                🏆
+            </div>
+
+            <strong>
+                Logros
+            </strong>
+
+            <span>
+                Insignias
+            </span>
+
+        </button>
+
+
+        <button
+            class="quick"
+            onclick="abrirTienda()">
+
+            <div class="quick-icon">
+                🎁
+            </div>
+
+            <strong>
+                Recompensas
+            </strong>
+
+            <span>
+                Canjear Auras
+            </span>
+
+        </button>
+
+
+        <button
+            class="quick"
+            onclick="abrirHistorial()">
+
+            <div class="quick-icon">
+                📜
+            </div>
+
+            <strong>
+                Historial
+            </strong>
+
+            <span>
+                Movimientos
+            </span>
+
+        </button>
+
+    </div>
+
 </section>
+
+
+<!-- =========================
+     PROGRESO
+========================= -->
+
+<section class="section">
+
+    <div class="section-header">
+
+        <div class="section-title">
+            📈 Progreso
+        </div>
+
+    </div>
+
+
+    <div class="progress-card">
+
+        <div class="progress-row">
+
+            <div class="progress-info">
+                <span>Actividades</span>
+                <span>65%</span>
+            </div>
+
+            <div class="progress">
+                <div
+                    class="progress-bar"
+                    style="width:65%">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="progress-row">
+
+            <div class="progress-info">
+                <span>Misiones</span>
+                <span>40%</span>
+            </div>
+
+            <div class="progress">
+                <div
+                    class="progress-bar"
+                    style="width:40%">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="progress-row">
+
+            <div class="progress-info">
+                <span>Logros</span>
+                <span>30%</span>
+            </div>
+
+            <div class="progress">
+                <div
+                    class="progress-bar"
+                    style="width:30%">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
 </main>
 
-<footer>Aprender jugando · Matemática para todos 💙</footer>
+
+<!-- =========================
+     NAVEGACIÓN
+========================= -->
+
+<nav class="bottom-nav">
+
+    <button
+        class="nav-item active"
+        onclick="irInicio()">
+
+        <div>🏠</div>
+        Inicio
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        onclick="abrirEstudiantes()">
+
+        <div>👥</div>
+        Estudiantes
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        onclick="abrirAuras()">
+
+        <div>✨</div>
+        Auras
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        onclick="abrirMisiones()">
+
+        <div>🎯</div>
+        Misiones
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        onclick="abrirTienda()">
+
+        <div>🎁</div>
+        Premios
+
+    </button>
+
+</nav>
+
+</div>
+
+
+<!-- =========================
+     MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                AURA+
+            </h2>
+
+            <button
+                class="close"
+                onclick="cerrarModal()">
+                ✕
+            </button>
+
+        </div>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
 
 <script>
-const secciones = document.querySelectorAll(".seccion");
-const botonesNav = document.querySelectorAll("nav button");
 
-botonesNav.forEach(boton => {
-  boton.addEventListener("click", () => {
-    botonesNav.forEach(b => b.classList.remove("active"));
-    boton.classList.add("active");
+/* =========================================
+   DATOS
+========================================= */
 
-    secciones.forEach(s => s.classList.add("oculto"));
-    document.getElementById(boton.dataset.seccion)
-      .classList.remove("oculto");
-  });
-});
+let estudiantes = JSON.parse(
+    localStorage.getItem("aura_estudiantes") || "[]"
+);
 
-function tipoAngulo(g) {
-  if (g === 0) return "Ángulo nulo";
-  if (g < 90) return "🟢 Ángulo agudo";
-  if (g === 90) return "🔵 Ángulo recto";
-  if (g < 180) return "🟠 Ángulo obtuso";
-  if (g === 180) return "🟣 Ángulo extendido";
-  if (g < 360) return "🔴 Ángulo cóncavo";
-  return "🔴 Ángulo completo";
-}
+let movimientos = JSON.parse(
+    localStorage.getItem("aura_movimientos") || "[]"
+);
 
-function dibujarAngulo(g) {
-  const cx = 160, cy = 220, radio = 120;
-  const rad = g * Math.PI / 180;
-  const x = cx + radio * Math.cos(rad);
-  const y = cy - radio * Math.sin(rad);
 
-  document.getElementById("lado2").setAttribute("x2", x);
-  document.getElementById("lado2").setAttribute("y2", y);
+let recompensas = [
 
-  const pasos = Math.min(Math.max(g, 1), 360);
-  let d = `M ${cx} ${cy} `;
-  for (let i = 0; i <= pasos; i += 3) {
-    const a = Math.min(i, g) * Math.PI / 180;
-    const px = cx + 48 * Math.cos(a);
-    const py = cy - 48 * Math.sin(a);
-    d += `L ${px} ${py} `;
-  }
-  const ex = cx + 48 * Math.cos(rad);
-  const ey = cy - 48 * Math.sin(rad);
-  d += `L ${ex} ${ey} Z`;
+    {
+        id: 1,
+        nombre: "Elegir una actividad",
+        icono: "🎯",
+        precio: 50
+    },
 
-  document.getElementById("sector").setAttribute("d", d);
-  document.getElementById("medida").textContent = g + "°";
-  document.getElementById("nombre").textContent = tipoAngulo(g);
-}
+    {
+        id: 2,
+        nombre: "10 minutos de juego",
+        icono: "🎮",
+        precio: 80
+    },
 
-const control = document.getElementById("control");
-control.addEventListener("input", () => {
-  dibujarAngulo(Number(control.value));
-});
+    {
+        id: 3,
+        nombre: "Elegir una canción",
+        icono: "🎵",
+        precio: 60
+    },
 
-document.getElementById("aleatorio").addEventListener("click", () => {
-  const valores = [30, 45, 60, 90, 110, 135, 180, 225, 270, 360];
-  control.value = valores[Math.floor(Math.random() * valores.length)];
-  dibujarAngulo(Number(control.value));
-});
+    {
+        id: 4,
+        nombre: "Ser ayudante del profesor",
+        icono: "⭐",
+        precio: 100
+    },
 
-dibujarAngulo(45);
+    {
+        id: 5,
+        nombre: "Premio físico",
+        icono: "🎁",
+        precio: 200
+    }
 
-// Banco de preguntas
-const preguntas = [
-  {p:"¿Cuánto mide un ángulo recto?", o:["45°","90°","180°"], r:1},
-  {p:"¿Cuál es un ángulo agudo?", o:["120°","90°","35°"], r:2},
-  {p:"¿Cómo se clasifica un ángulo de 130°?", o:["Agudo","Obtuso","Recto"], r:1},
-  {p:"¿Cuánto mide un ángulo extendido?", o:["180°","90°","360°"], r:0},
-  {p:"¿Cuál es un ángulo completo?", o:["270°","180°","360°"], r:2},
-  {p:"Un ángulo de 70° es...", o:["Agudo","Obtuso","Recto"], r:0},
-  {p:"¿Qué ángulo mide exactamente 90°?", o:["Extendido","Recto","Completo"], r:1},
-  {p:"Un ángulo de 150° es...", o:["Agudo","Obtuso","Recto"], r:1},
-  {p:"¿Cuántos grados tiene media vuelta?", o:["90°","180°","360°"], r:1},
-  {p:"¿Cuántos grados tiene una vuelta completa?", o:["180°","90°","360°"], r:2}
 ];
 
-let indice = 0;
-let puntos = 0;
-let respondida = false;
-let ordenPreguntas = [];
 
-function iniciarReto() {
-  ordenPreguntas = [...preguntas].sort(() => Math.random() - 0.5);
-  indice = 0;
-  puntos = 0;
-  mostrarPregunta();
+/* =========================================
+   GUARDAR
+========================================= */
+
+function guardar() {
+
+    localStorage.setItem(
+        "aura_estudiantes",
+        JSON.stringify(estudiantes)
+    );
+
+    localStorage.setItem(
+        "aura_movimientos",
+        JSON.stringify(movimientos)
+    );
+
+    actualizarInicio();
+
 }
 
-function mostrarPregunta() {
-  respondida = false;
-  const q = ordenPreguntas[indice];
 
-  document.getElementById("contador").textContent =
-    `Pregunta ${indice + 1} de ${ordenPreguntas.length}`;
-  document.getElementById("barra").style.width =
-    `${indice / ordenPreguntas.length * 100}%`;
-  document.getElementById("pregunta").textContent = q.p;
-  document.getElementById("resultado").textContent = "";
-  document.getElementById("siguiente").disabled = true;
-  document.getElementById("siguiente").textContent =
-    indice === ordenPreguntas.length - 1
-      ? "Ver resultado 🏆"
-      : "Siguiente pregunta →";
+/* =========================================
+   ACTUALIZAR INICIO
+========================================= */
 
-  const contenedor = document.getElementById("opciones");
-  contenedor.innerHTML = "";
+function actualizarInicio() {
 
-  q.o.forEach((opcion, i) => {
-    const b = document.createElement("button");
-    b.textContent = opcion;
-    b.addEventListener("click", () => responder(i));
-    contenedor.appendChild(b);
-  });
+    let total = estudiantes.reduce(
+        (suma, estudiante) =>
+        suma + Number(estudiante.auras || 0),
+        0
+    );
+
+    document.getElementById(
+        "totalAuras"
+    ).textContent = total;
+
+
+    document.getElementById(
+        "cantidadEstudiantes"
+    ).textContent =
+        estudiantes.length +
+        (
+            estudiantes.length === 1
+            ? " estudiante"
+            : " estudiantes"
+        );
+
 }
 
-function responder(eleccion) {
-  if (respondida) return;
-  respondida = true;
 
-  const q = ordenPreguntas[indice];
-  const opciones = document.querySelectorAll("#opciones button");
+/* =========================================
+   MODAL
+========================================= */
 
-  opciones.forEach(b => b.disabled = true);
+function abrirModal(titulo, contenido) {
 
-  if (eleccion === q.r) {
-    puntos++;
-    document.getElementById("resultado").textContent =
-      "✅ ¡Muy bien! Respuesta correcta.";
-    opciones[eleccion].style.background = "#dcfce7";
-  } else {
-    document.getElementById("resultado").textContent =
-      `❌ La respuesta correcta es: ${q.o[q.r]}.`;
-    opciones[eleccion].style.background = "#fee2e2";
-    opciones[q.r].style.background = "#dcfce7";
-  }
+    document.getElementById(
+        "modalTitle"
+    ).textContent = titulo;
 
-  document.getElementById("siguiente").disabled = false;
+
+    document.getElementById(
+        "modalContent"
+    ).innerHTML = contenido;
+
+
+    document.getElementById(
+        "modal"
+    ).classList.add("active");
+
 }
 
-document.getElementById("siguiente").addEventListener("click", () => {
-  if (!respondida) return;
 
-  if (indice < ordenPreguntas.length - 1) {
-    indice++;
-    mostrarPregunta();
-  } else {
-    document.getElementById("pregunta").textContent =
-      `¡Terminaste! Tu puntaje es ${puntos} de ${preguntas.length}.`;
-    document.getElementById("opciones").innerHTML = "";
-    document.getElementById("resultado").textContent =
-      puntos >= 8
-        ? "🌟 ¡Excelente trabajo!"
-        : "💪 ¡Sigue practicando, puedes mejorar!";
-    document.getElementById("contador").textContent = "Desafío finalizado";
-    document.getElementById("barra").style.width = "100%";
-    document.getElementById("siguiente").textContent = "Volver a jugar";
-    document.getElementById("siguiente").disabled = false;
-    document.getElementById("siguiente").onclick = iniciarReto;
-  }
-});
+function cerrarModal() {
 
-iniciarReto();
+    document.getElementById(
+        "modal"
+    ).classList.remove("active");
+
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+function mostrarToast(mensaje) {
+
+    let toast =
+        document.getElementById("toast");
+
+    toast.textContent = mensaje;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 2500);
+
+}
+
+
+/* =========================================
+   ESTUDIANTES
+========================================= */
+
+function abrirEstudiantes() {
+
+    let html = `
+
+        <button
+            class="primary"
+            onclick="formularioEstudiante()">
+
+            + Agregar estudiante
+
+        </button>
+
+        <div style="height:15px"></div>
+
+    `;
+
+
+    if (estudiantes.length === 0) {
+
+        html += `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    👥
+                </div>
+
+                Todavía no tienes estudiantes registrados.
+
+            </div>
+
+        `;
+
+    } else {
+
+        estudiantes.forEach(
+            (e,index) => {
+
+                html += `
+
+                    <div class="student">
+
+                        <div class="student-top">
+
+                            <div class="avatar">
+                                👤
+                            </div>
+
+                            <div class="student-main">
+
+                                <div class="student-name">
+                                    ${e.nombre}
+                                </div>
+
+                                <div class="student-info">
+                                    ${e.curso || "Sin curso"}
+                                </div>
+
+                            </div>
+
+                            <div class="student-aura">
+                                ✨ ${e.auras || 0}
+                            </div>
+
+                        </div>
+
+
+                        <div class="actions">
+
+                            <button
+                                class="secondary"
+                                onclick="darAuras(${index})">
+
+                                + Auras
+
+                            </button>
+
+
+                            <button
+                                class="secondary"
+                                onclick="editarEstudiante(${index})">
+
+                                ✏️
+
+                            </button>
+
+
+                            <button
+                                class="danger"
+                                onclick="eliminarEstudiante(${index})">
+
+                                🗑️
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+    abrirModal(
+        "👥 Estudiantes",
+        html
+    );
+
+}
+
+
+/* =========================================
+   FORMULARIO
+========================================= */
+
+function formularioEstudiante(indice = null) {
+
+    let estudiante =
+        indice !== null
+        ? estudiantes[indice]
+        : {
+            nombre:"",
+            curso:"",
+            nfc:"",
+            auras:0
+        };
+
+
+    let titulo =
+        indice === null
+        ? "➕ Nuevo estudiante"
+        : "✏️ Editar estudiante";
+
+
+    let html = `
+
+        <label>
+            Nombre
+        </label>
+
+        <input
+            id="nombre"
+            value="${estudiante.nombre}"
+            placeholder="Nombre del estudiante">
+
+
+        <label>
+            Curso
+        </label>
+
+        <input
+            id="curso"
+            value="${estudiante.curso}"
+            placeholder="Ej: 6° Básico">
+
+
+        <label>
+            Código NFC
+        </label>
+
+        <input
+            id="nfc"
+            value="${estudiante.nfc}"
+            placeholder="Ej: AURA-001">
+
+
+        <button
+            class="primary"
+            onclick="guardarEstudiante(${indice})">
+
+            💾 Guardar estudiante
+
+        </button>
+
+    `;
+
+
+    abrirModal(
+        titulo,
+        html
+    );
+
+}
+
+
+/* =========================================
+   GUARDAR ESTUDIANTE
+========================================= */
+
+function guardarEstudiante(indice) {
+
+    let nombre =
+        document.getElementById(
+            "nombre"
+        ).value.trim();
+
+
+    let curso =
+        document.getElementById(
+            "curso"
+        ).value.trim();
+
+
+    let nfc =
+        document.getElementById(
+            "nfc"
+        ).value.trim();
+
+
+    if (!nombre) {
+
+        mostrarToast(
+            "Escribe el nombre del estudiante."
+        );
+
+        return;
+    }
+
+
+    if (indice === null) {
+
+        estudiantes.push({
+
+            nombre: nombre,
+            curso: curso,
+            nfc: nfc,
+            auras: 0
+
+        });
+
+    } else {
+
+        estudiantes[indice].nombre = nombre;
+        estudiantes[indice].curso = curso;
+        estudiantes[indice].nfc = nfc;
+
+    }
+
+
+    guardar();
+
+    abrirEstudiantes();
+
+    mostrarToast(
+        "Estudiante guardado ✨"
+    );
+
+}
+
+
+/* =========================================
+   EDITAR
+========================================= */
+
+function editarEstudiante(indice) {
+
+    formularioEstudiante(indice);
+
+}
+
+
+/* =========================================
+   ELIMINAR
+========================================= */
+
+function eliminarEstudiante(indice) {
+
+    if (
+        confirm(
+            "¿Eliminar este estudiante?"
+        )
+    ) {
+
+        estudiantes.splice(
+            indice,
+            1
+        );
+
+        guardar();
+
+        abrirEstudiantes();
+
+        mostrarToast(
+            "Estudiante eliminado"
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   DAR AURAS
+========================================= */
+
+function darAuras(indice) {
+
+    let cantidad =
+        Number(
+            prompt(
+                "¿Cuántas Auras quieres entregar?"
+            )
+        );
+
+
+    if (
+        !cantidad ||
+        cantidad <= 0
+    ) return;
+
+
+    estudiantes[indice].auras += cantidad;
+
+
+    movimientos.unshift({
+
+        estudiante:
+            estudiantes[indice].nombre,
+
+        cantidad:
+            cantidad,
+
+        tipo:
+            "ganancia",
+
+        motivo:
+            "Recompensa manual",
+
+        fecha:
+            new Date().toLocaleString()
+
+    });
+
+
+    guardar();
+
+    abrirEstudiantes();
+
+    mostrarToast(
+        `+${cantidad} Auras ✨`
+    );
+
+}
+
+
+/* =========================================
+   AURAS
+========================================= */
+
+function abrirAuras() {
+
+    let html = `
+
+        <div class="aura-card"
+             style="margin-top:0;margin-bottom:15px">
+
+            <div class="aura-small">
+                ✨ AURAS DISPONIBLES
+            </div>
+
+            <div class="aura-number">
+                ${estudiantes.reduce(
+                    (s,e) =>
+                    s + Number(e.auras || 0),
+                    0
+                )}
+            </div>
+
+            <div class="aura-label">
+                entre todos los estudiantes
+            </div>
+
+        </div>
+
+    `;
+
+
+    if (
+        estudiantes.length === 0
+    ) {
+
+        html += `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    👥
+                </div>
+
+                Agrega estudiantes para comenzar.
+
+            </div>
+
+        `;
+
+    } else {
+
+        estudiantes.forEach(
+            (e,index) => {
+
+                html += `
+
+                    <div class="student">
+
+                        <div class="student-top">
+
+                            <div class="avatar">
+                                👤
+                            </div>
+
+                            <div class="student-main">
+
+                                <div class="student-name">
+                                    ${e.nombre}
+                                </div>
+
+                                <div class="student-info">
+                                    ${e.curso || ""}
+                                </div>
+
+                            </div>
+
+                            <div class="student-aura">
+                                ✨ ${e.auras}
+                            </div>
+
+                        </div>
+
+                        <div class="actions">
+
+                            <button
+                                class="primary"
+                                onclick="darAuras(${index})">
+
+                                + Entregar Auras
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+    abrirModal(
+        "✨ Auras",
+        html
+    );
+
+}
+
+
+/* =========================================
+   HISTORIAL
+========================================= */
+
+function abrirHistorial() {
+
+    let html = "";
+
+
+    if (
+        movimientos.length === 0
+    ) {
+
+        html = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📜
+                </div>
+
+                Todavía no hay movimientos.
+
+            </div>
+
+        `;
+
+    } else {
+
+        movimientos.forEach(
+            m => {
+
+                let positivo =
+                    m.tipo === "ganancia";
+
+
+                html += `
+
+                    <div class="transaction">
+
+                        <div class="transaction-info">
+
+                            <strong>
+                                ${m.estudiante}
+                            </strong>
+
+                            <br>
+
+                            <small>
+                                ${m.motivo}
+                            </small>
+
+                            <br>
+
+                            <small>
+                                ${m.fecha}
+                            </small>
+
+                        </div>
+
+                        <div
+                            class="transaction-amount
+                            ${positivo ? "plus" : "minus"}">
+
+                            ${positivo ? "+" : "-"}
+                            ${m.cantidad}
+                            ✨
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+    abrirModal(
+        "📜 Historial",
+        html
+    );
+
+}
+
+
+/* =========================================
+   TIENDA
+========================================= */
+
+function abrirTienda() {
+
+    let html = `
+
+        <p style="
+            color:#888;
+            font-size:12px;
+            margin-bottom:15px">
+
+            Canjea tus Auras por recompensas.
+
+        </p>
+
+    `;
+
+
+    recompensas.forEach(
+        r => {
+
+            html += `
+
+                <div class="reward">
+
+                    <div class="reward-icon">
+                        ${r.icono}
+                    </div>
+
+                    <div class="reward-info">
+
+                        <div class="reward-name">
+                            ${r.nombre}
+                        </div>
+
+                        <div class="reward-price">
+                            ✨ ${r.precio} Auras
+                        </div>
+
+                    </div>
+
+                    <button
+                        onclick="canjear(${r.id})">
+
+                        CANJEAR
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    abrirModal(
+        "🎁 Recompensas",
+        html
+    );
+
+}
+
+
+/* =========================================
+   CANJEAR
+========================================= */
+
+function canjear(id) {
+
+    if (
+        estudiantes.length === 0
+    ) {
+
+        mostrarToast(
+            "Primero agrega estudiantes."
+        );
+
+        return;
+    }
+
+
+    let recompensa =
+        recompensas.find(
+            r => r.id === id
+        );
+
+
+    let lista =
+        estudiantes
+        .map(
+            (e,index) =>
+            `${index + 1}. ${e.nombre}`
+        )
+        .join("\n");
+
+
+    let seleccion =
+        prompt(
+            "Selecciona estudiante:\n\n" +
+            lista +
+            "\n\nEscribe el número:"
+        );
+
+
+    let indice =
+        Number(seleccion) - 1;
+
+
+    if (
+        indice < 0 ||
+        indice >= estudiantes.length
+    ) return;
+
+
+    let estudiante =
+        estudiantes[indice];
+
+
+    if (
+        estudiante.auras <
+        recompensa.precio
+    ) {
+
+        mostrarToast(
+            "No tiene suficientes Auras."
+        );
+
+        return;
+    }
+
+
+    if (
+        !confirm(
+            `¿Canjear "${recompensa.nombre}" por ${recompensa.precio} Auras?`
+        )
+    ) return;
+
+
+    estudiante.auras -=
+        recompensa.precio;
+
+
+    movimientos.unshift({
+
+        estudiante:
+            estudiante.nombre,
+
+        cantidad:
+            recompensa.precio,
+
+        tipo:
+            "gasto",
+
+        motivo:
+            "Canje: " +
+            recompensa.nombre,
+
+        fecha:
+            new Date().toLocaleString()
+
+    });
+
+
+    guardar();
+
+    mostrarToast(
+        "🎉 Recompensa canjeada"
+    );
+
+    abrirTienda();
+
+}
+
+
+/* =========================================
+   MISIONES
+========================================= */
+
+function abrirMisiones() {
+
+    abrirModal(
+
+        "🎯 Misiones",
+
+        `
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🎯
+            </div>
+
+            <strong>
+                Misiones próximamente
+            </strong>
+
+            <p style="margin-top:8px">
+                Aquí crearemos desafíos que
+                entregarán Auras.
+            </p>
+
+        </div>
+
+        `
+
+    );
+
+}
+
+
+/* =========================================
+   LOGROS
+========================================= */
+
+function abrirLogros() {
+
+    abrirModal(
+
+        "🏆 Logros",
+
+        `
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🏆
+            </div>
+
+            <strong>
+                Logros próximamente
+            </strong>
+
+            <p style="margin-top:8px">
+                Los estudiantes podrán desbloquear
+                insignias y subir de nivel.
+            </p>
+
+        </div>
+
+        `
+
+    );
+
+}
+
+
+/* =========================================
+   NFC
+========================================= */
+
+function simularNFC() {
+
+    if (
+        estudiantes.length === 0
+    ) {
+
+        mostrarToast(
+            "Primero agrega estudiantes."
+        );
+
+        abrirEstudiantes();
+
+        return;
+    }
+
+
+    mostrarToast(
+        "🪪 Sistema NFC preparado"
+    );
+
+}
+
+
+/* =========================================
+   INICIO
+========================================= */
+
+function irInicio() {
+
+    cerrarModal();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================
+   INICIAR
+========================================= */
+
+actualizarInicio();
+
 </script>
+
 </body>
 </html>

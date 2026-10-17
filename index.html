@@ -1118,6 +1118,10 @@ let movimientos = JSON.parse(
     localStorage.getItem("aura_movimientos") || "[]"
 );
 
+let asistencias = JSON.parse(
+    localStorage.getItem("aura_asistencias") || "[]"
+);
+
 
 let recompensas = [
 
@@ -1173,6 +1177,11 @@ function guardar() {
     localStorage.setItem(
         "aura_movimientos",
         JSON.stringify(movimientos)
+    );
+
+    localStorage.setItem(
+        "aura_asistencias",
+        JSON.stringify(asistencias)
     );
 
     actualizarInicio();
@@ -1387,7 +1396,7 @@ function abrirEstudiantes() {
    FORMULARIO
 ========================================= */
 
-function formularioEstudiante(indice = null) {
+function formularioEstudiante(indice = null, nfcInicial = "") {
 
     let estudiante =
         indice !== null
@@ -1395,7 +1404,7 @@ function formularioEstudiante(indice = null) {
         : {
             nombre:"",
             curso:"",
-            nfc:"",
+            nfc:nfcInicial,
             auras:0
         };
 
@@ -1513,11 +1522,19 @@ function guardarEstudiante(indice) {
 
     guardar();
 
-    abrirEstudiantes();
+    let idURL = new URLSearchParams(window.location.search).get("id");
 
-    mostrarToast(
-        "Estudiante guardado ✨"
-    );
+    if (idURL && idURL.toLowerCase() === nfc.toLowerCase()) {
+        let indiceGuardado = estudiantes.findIndex(
+            e => String(e.nfc || "").toLowerCase() === idURL.toLowerCase()
+        );
+        mostrarToast("Estudiante guardado ✨");
+        if (indiceGuardado >= 0) mostrarEstudianteNFC(indiceGuardado);
+        else abrirEstudiantes();
+    } else {
+        abrirEstudiantes();
+        mostrarToast("Estudiante guardado ✨");
+    }
 
 }
 
@@ -2072,25 +2089,128 @@ function abrirLogros() {
 ========================================= */
 
 function simularNFC() {
+    const id = new URLSearchParams(window.location.search).get("id");
 
-    if (
-        estudiantes.length === 0
-    ) {
-
-        mostrarToast(
-            "Primero agrega estudiantes."
-        );
-
-        abrirEstudiantes();
-
+    if (id) {
+        procesarIdentificadorURL();
         return;
     }
 
+    mostrarToast("Acerca la tarjeta al iPhone y toca la notificación para abrir AURA+.");
+}
 
-    mostrarToast(
-        "🪪 Sistema NFC preparado"
+function procesarIdentificadorURL() {
+    const id = new URLSearchParams(window.location.search).get("id");
+    if (!id) return;
+
+    const indice = estudiantes.findIndex(
+        e => String(e.nfc || "").trim().toLowerCase() === id.trim().toLowerCase()
     );
 
+    if (indice >= 0) {
+        mostrarEstudianteNFC(indice);
+    } else {
+        abrirModal(
+            "🪪 Tarjeta detectada",
+            `
+            <div class="empty">
+                <div class="empty-icon">🪪</div>
+                <strong>Identificador: ${escaparHTML(id)}</strong>
+                <p style="margin-top:8px">
+                    Esta tarjeta todavía no está vinculada a un estudiante.
+                    Puedes registrar uno usando este código.
+                </p>
+            </div>
+            <button class="primary" onclick="cerrarModal(); formularioEstudiante(null, ${JSON.stringify(id)})">
+                + Vincular estudiante a esta tarjeta
+            </button>
+            `
+        );
+    }
+}
+
+function mostrarEstudianteNFC(indice) {
+    const e = estudiantes[indice];
+    if (!e) return;
+
+    const hoy = new Date().toLocaleDateString("es-CL");
+    const yaRegistrada = asistencias.some(a => a.nfc === e.nfc && a.fechaDia === hoy);
+    const asistenciaHoy = yaRegistrada
+        ? `<p style="color:#159447;font-weight:700;margin:12px 0">✓ Asistencia registrada hoy</p>`
+        : `<button class="primary" onclick="registrarAsistencia(${indice})">✓ Registrar asistencia de hoy</button>`;
+
+    abrirModal(
+        "🪪 Estudiante identificado",
+        `
+        <div class="student">
+            <div class="student-top">
+                <div class="avatar">👤</div>
+                <div class="student-main">
+                    <div class="student-name">${escaparHTML(e.nombre)}</div>
+                    <div class="student-info">${escaparHTML(e.curso || "Sin curso")}</div>
+                    <div class="student-info">Código NFC: ${escaparHTML(e.nfc || "Sin código")}</div>
+                </div>
+                <div class="student-aura">✨ ${Number(e.auras || 0)}</div>
+            </div>
+        </div>
+        ${asistenciaHoy}
+        <button class="secondary" style="width:100%;margin-top:10px" onclick="darAuras(${indice});">✨ Entregar Auras</button>
+        <button class="secondary" style="width:100%;margin-top:10px" onclick="verAsistencias()">📅 Ver asistencias registradas</button>
+        `
+    );
+}
+
+function registrarAsistencia(indice) {
+    const e = estudiantes[indice];
+    if (!e) return;
+
+    const ahora = new Date();
+    const fechaDia = ahora.toLocaleDateString("es-CL");
+    const existe = asistencias.some(a => a.nfc === e.nfc && a.fechaDia === fechaDia);
+
+    if (existe) {
+        mostrarToast("La asistencia ya fue registrada hoy.");
+        mostrarEstudianteNFC(indice);
+        return;
+    }
+
+    asistencias.unshift({
+        estudiante: e.nombre,
+        curso: e.curso || "",
+        nfc: e.nfc || "",
+        fechaDia: fechaDia,
+        fecha: ahora.toLocaleString("es-CL")
+    });
+
+    guardar();
+    mostrarToast("✓ Asistencia registrada");
+    mostrarEstudianteNFC(indice);
+}
+
+function verAsistencias() {
+    let html = "";
+
+    if (asistencias.length === 0) {
+        html = `<div class="empty"><div class="empty-icon">📅</div>Todavía no hay asistencias registradas.</div>`;
+    } else {
+        html = asistencias.map(a => `
+            <div class="transaction">
+                <div class="transaction-info">
+                    <strong>${escaparHTML(a.estudiante)}</strong><br>
+                    <small>${escaparHTML(a.curso || "Sin curso")} · ${escaparHTML(a.fecha || a.fechaDia)}</small>
+                </div>
+                <div class="transaction-amount plus">✓</div>
+            </div>
+        `).join("");
+    }
+
+    abrirModal("📅 Asistencias", html);
+}
+
+function escaparHTML(valor) {
+    return String(valor ?? "").replace(/[&<>"']/g, caracter => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    })[caracter]);
 }
 
 
@@ -2115,6 +2235,7 @@ function irInicio() {
 ========================================= */
 
 actualizarInicio();
+procesarIdentificadorURL();
 
 </script>
 
